@@ -1,0 +1,29 @@
+<!--
+  Generated template for the LoginPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-content class="background">
+	<h2 id="title" text-center>Polly!</h2>
+	<ion-card>
+		<ion-card-content>
+			<form [formGroup]="user" (ngSubmit)="userLogin()">
+
+				<ion-input type="email" name="email" placeholder="Email" formControlName="email" required></ion-input>
+				<p [hidden]="user.controls.email.valid" danger padding-left>Please enter valid Email address</p>
+
+				<ion-input type="password" name="password" placeholder="Password" formControlName="password" required></ion-input>
+				<p [hidden]="user.controls.password.valid" danger padding-left>Please enter valid Password</p>
+
+				<button class="top-btn" ion-button block outline color="light" type="submit" [disabled]="!user.valid">Log in</button>
+			
+			</form>
+			<p text-center>OR</p>
+			<!--<button ion-button block color="google">-->
+				<!--<ion-icon name="logo-google"></ion-icon> Login with Google-->
+			<!--</button>-->
+			<button class="bottom-btn" ion-button clear full color="light" [disabled]="loginBtnDisabled" [navPush]="registerPage">Create new Account</button>
+		</ion-card-content>
+	</ion-card>
+</ion-content>

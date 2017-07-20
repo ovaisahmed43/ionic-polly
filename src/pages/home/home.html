@@ -1,14 +1,105 @@
-<ion-header>
-  <ion-navbar>
-    <ion-title>
-      Ionic Blank
-    </ion-title>
-  </ion-navbar>
+<!--=====================================================================-->
+<!--Header-Started-->
+
+<ion-header no-border>
+  <ion-toolbar>
+
+    <ion-title>Polly!</ion-title>
+
+    <ion-buttons end>
+      <button ion-button icon-only (click)="getMorePost(null);">
+        <ion-icon name="refresh" color="primary"></ion-icon>
+      </button>
+      <button ion-button icon-only [disabled]="user == null" (click)="gotoProfile()">
+        <ion-icon name="person" color="primary"></ion-icon>
+      </button>
+    </ion-buttons>
+
+  </ion-toolbar>
 </ion-header>
 
-<ion-content padding>
-  The world is your oyster.
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will be your guide.
-  </p>
+<!--Header-Ended-->
+<!--=====================================================================-->
+<!--Body-Started-->
+
+<ion-content no-padding>
+
+  <ion-scroll scrollX="true">
+    <ion-chip *ngFor="let category of categories">
+      <ion-label>{{ category.category.name }}</ion-label>
+      <button ion-button color="primary" class="flat-btn">
+        <ion-icon name="add"></ion-icon>
+      </button>
+    </ion-chip>
+  </ion-scroll>
+
+  <ion-card class="post" *ngFor="let fdata of feedData" (click)="gotoPost(fdata)" no-margin>
+
+    <ion-item>
+      <ion-thumbnail item-left>
+        <img src="{{ host }}/storage/{{ fdata.profile_pic }}">
+      </ion-thumbnail>
+      <h2>{{ fdata.name }}</h2>
+      <p>{{ fdata.post_time | date:'fullDate' }}</p>
+    </ion-item>
+
+    <div class="ques" [innerHTML]="fdata.question"></div>
+
+    <ion-row class="chips">
+      <ion-chip *ngFor="let kw of fdata.keywords">
+        <ion-label>#{{ kw.keyword }}</ion-label>
+      </ion-chip>
+    </ion-row>
+
+    <ion-row>
+      <ion-col text-right>
+        <button ion-button icon-left small class="flat-btn">
+          <ion-icon name="thumbs-up"></ion-icon>
+          <div>{{ fdata.post_total_replies }}</div>
+        </button>
+        <button ion-button icon-left small class="flat-btn">
+          <ion-icon name="text"></ion-icon>
+          <div>{{ fdata.comments_count }}</div>
+        </button>
+      </ion-col>
+    </ion-row>
+
+  </ion-card>
+
+  <ion-infinite-scroll (ionInfinite)="getMorePost($event)">
+    <ion-infinite-scroll-content loadingSpinner="bubbles">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+  <ion-fab right bottom>
+    <button ion-fab>
+      <ion-icon name="md-create"></ion-icon>
+    </button>
+    <ion-fab-list side="top">
+      <button ion-fab (click)="gotoCreate('text')">
+        <img src="assets/img/text.png" alt="image">
+        <!--<ion-icon name="ios-paper"></ion-icon>-->
+        <ion-label>Text Poll</ion-label>
+      </button>
+      <button ion-fab (click)="gotoCreate('image')">
+        <img src="assets/img/image.png" alt="image">
+        <!--<ion-icon name="md-image"></ion-icon>-->
+        <ion-label>Image Poll</ion-label>
+      </button>
+      <button ion-fab (click)="gotoCreate('audio')">
+        <img src="assets/img/audio.png" alt="image">
+        <!--<ion-icon name="md-musical-notes"></ion-icon>-->
+        <ion-label>Audio Poll</ion-label>
+      </button>
+      <button ion-fab (click)="gotoCreate('video')">
+        <img src="assets/img/video.png" alt="image">
+        <!--<ion-icon name="md-videocam"></ion-icon>-->
+        <ion-label>Video Poll</ion-label>
+      </button>
+    </ion-fab-list>
+  </ion-fab>
+
 </ion-content>
+
+<!--Body-Ended-->
+<!--=====================================================================-->

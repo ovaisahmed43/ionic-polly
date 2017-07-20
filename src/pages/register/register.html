@@ -1,0 +1,39 @@
+<!--
+  Generated template for the RegisterPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-content class="background">
+	<h2 id="title" text-center>Polly!</h2>
+	<ion-card>
+		<ion-card-content>
+			<form [formGroup]="user" (ngSubmit)="userRegister()">
+
+				<p *ngFor="let error of name_error" ng-show="!(name_error.length == 0)" danger padding-left>{{ error }}</p>
+				<ion-input type="text" name="name" placeholder="Name" formControlName="name" required></ion-input>
+				<p [hidden]="user.controls.name.valid" danger padding-left>Please enter valid Name</p>
+
+				<p *ngFor="let error of username_error" ng-show="!(username_error.length == 0)" danger padding-left>{{ error }}</p>
+				<ion-input type="text" name="username" placeholder="Username" formControlName="username" required></ion-input>
+				<p [hidden]="user.controls.username.valid" danger padding-left>Please enter valid Username</p>
+
+				<p *ngFor="let error of email_error" ng-show="!(email_error.length == 0)" danger padding-left>{{ error }}</p>
+				<ion-input type="email" name="email" placeholder="Email" formControlName="email" required></ion-input>
+				<p [hidden]="user.controls.email.valid" danger padding-left>Please enter valid Email</p>
+
+				<p *ngFor="let error of password_error" ng-show="!(password_error.length == 0)" danger padding-left>{{ error }}</p>
+				<ion-input type="password" name="password" placeholder="Password" formControlName="password" required></ion-input>
+				<p [hidden]="user.controls.password.valid" danger padding-left>Please enter valid Password</p>
+
+				<ion-input type="password" name="cpassword" placeholder="Confirm Password" formControlName="cpassword" required></ion-input>
+				<p [hidden]="user.controls.cpassword.valid" danger padding-left>Please enter valid Password</p>
+
+				<button class="top-btn" ion-button block outline color="light" type="submit" [disabled]="!user.valid">Register</button>
+
+			</form>
+			<p text-center>OR</p>
+			<button class="bottom-btn" ion-button clear full color="light" (click)="goBack()">Already have an Account</button>
+		</ion-card-content>
+	</ion-card>
+</ion-content>

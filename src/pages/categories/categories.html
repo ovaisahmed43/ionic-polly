@@ -1,0 +1,19 @@
+<ion-header no-border>
+  <ion-navbar>
+    <ion-title>Categories</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content no-padding>
+  <ion-card>
+    <ion-chip *ngFor="let category of categories">
+      <ion-label>{{ category.name }}</ion-label>
+      <button ion-button color="primary" class="flat-btn" *ngIf="!(followingIds.includes(category.id))" (click)="manageCategory(category.id)">
+        <ion-icon name="add"></ion-icon>
+      </button>
+      <button ion-button color="danger" class="flat-btn" *ngIf="(followingIds.includes(category.id))" (click)="manageCategory(category.id)">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-chip>
+  </ion-card>
+</ion-content>

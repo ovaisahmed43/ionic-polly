@@ -1,0 +1,18 @@
+page-profile {
+    #profile-header {
+        padding-bottom: 0px !important;
+    }
+    #profile-image {
+        max-width: 100% !important;
+        border-radius: 20px !important;
+        // margin: 0 auto;
+    }
+    .segment-ios .segment-button:first-of-type {
+        border-top-left-radius: 10px !important;
+        border-bottom-left-radius: 0px !important;
+    }
+    .segment-ios .segment-button:last-of-type {
+        border-top-right-radius: 10px !important;
+        border-bottom-right-radius: 0px !important;
+    }
+}

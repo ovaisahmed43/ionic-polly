@@ -1,0 +1,94 @@
+<ion-header no-border>
+
+  <ion-navbar>
+    <ion-title>Create New!</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content no-padding>
+
+  <form [formGroup]="post" (ngSubmit)="postPoll()">
+
+    <!--Question-->
+    <ion-card class="ques-card" no-margin>
+
+      <ion-card-header>Question</ion-card-header>
+
+      <ion-card-content>
+        <ion-textarea formControlName="ques" name="ques"></ion-textarea>
+      </ion-card-content>
+
+    </ion-card>
+
+    <!--Options-->
+    <ion-label id="option-label">Options</ion-label>
+
+    <ion-row *ngIf="type == 'text'">
+      <div formArrayName="options" [style.width]="'100%'">
+        <ion-card *ngFor="let option of options.controls" [formGroupName]="option.controls.option_no.value" id="{{ 'option-' + option.controls.option_no.value }}" class="opt-card" no-margin>
+
+          <ion-card-header>Option {{ option.controls.option_no.value + 1 }}</ion-card-header>
+
+          <ion-card-content>
+            <ion-textarea formControlName="text" name="text">{{ option.controls.option_no.value }}</ion-textarea>
+          </ion-card-content>
+
+        </ion-card>
+      </div>
+    </ion-row>
+
+    <ion-row *ngIf="type != 'text'">
+      <div formArrayName="options" [style.width]="'100%'">
+        <ion-card *ngFor="let option of options.controls" [formGroupName]="option.controls.option_no.value" id="{{ 'option-' + option.controls.option_no.value }}" class="opt-card" no-margin margin-bottom>
+
+          <ion-card-header>Option {{ option.controls.option_no.value + 1 }}</ion-card-header>
+
+          <ion-card-content>
+            <ion-textarea formControlName="caption" name="caption"></ion-textarea>
+            <button ion-button block type="button" (click)="uploadFile(option.controls.option_no.value)">Choose
+              <img *ngIf="post.type == 'image'" src="assets/img/image.png" alt="image" class="img-icon">
+              <img *ngIf="post.type == 'audio'" src="assets/img/audio.png" alt="audio" class="img-icon">
+              <img *ngIf="post.type == 'video'" src="assets/img/video.png" alt="video" class="img-icon">
+            </button>
+          </ion-card-content>
+
+          <ion-card *ngIf="option.controls.file_path.value != ''">
+            <img *ngIf="post.type == 'image'" src="{{host}}/storage/{{ option.controls.file_path.value }}" alt="">
+            <audio *ngIf="post.type == 'audio'" src="{{host}}/storage/{{ option.controls.file_path.value }}"></audio>
+            <video *ngIf="post.type == 'video'" src="{{host}}/storage/{{ option.controls.file_path.value }}"></video>
+          </ion-card>
+
+        </ion-card>
+      </div>
+    </ion-row>
+
+    <!--Buttons-->
+    <ion-card class="opt-add-card" no-margin>
+      <button ion-button icon-only clear block type="button" [hidden]="post.controls.count.value >= 4" (click)="addOption()"><ion-icon name="md-add"></ion-icon></button>
+    </ion-card>
+
+    <ion-card class="keyword-card" no-margin>
+      <ion-card-header>Keywords</ion-card-header>
+      <ion-card-content>
+        <ion-select formControlName="keywords" name="keywords" placeholder="select at-least one keyword" multiple="true">
+          <ion-option *ngFor="let keyword of all_keywords" value="{{keyword.id}}">{{keyword.name}}</ion-option>
+        </ion-select>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-row>
+      <ion-col>
+        <button ion-button icon-only block type="submit" [disabled]="post.invalid"><ion-icon name="md-send"></ion-icon></button>
+      </ion-col>
+    </ion-row>
+
+    <!--Buttons-->
+    <ion-card no-margin>
+      <button ion-button icon-only clear block type="button" (click)="test()">Test</button>
+    </ion-card>
+
+  </form>
+
+</ion-content>

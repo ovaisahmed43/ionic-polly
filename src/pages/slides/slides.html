@@ -1,0 +1,20 @@
+<ion-header><ion-navbar></ion-navbar></ion-header>
+
+<ion-content no-padding>
+  <ion-slides>
+    <ion-slide *ngFor="let option of options" (ionSlideDidChange)="slideChanged()">
+
+      <img *ngIf="type == 'image'" src="{{ host }}/storage/{{ option.filename }}" height="100%" width="100%" class="option-image">
+      <div class="info">
+        <div class="bg-caption"></div>
+        <div class="caption" [innerHTML]="option.caption"></div>
+      </div>
+      <ion-fab right bottom>
+        <button ion-fab mini>
+          <ion-icon name="ios-thumbs-up-outline"></ion-icon>
+        </button>
+      </ion-fab>
+
+    </ion-slide>
+  </ion-slides>
+</ion-content>

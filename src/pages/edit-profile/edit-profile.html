@@ -1,0 +1,122 @@
+<!--=====================================================================-->
+<!--Header-Started-->
+
+<ion-header no-border>
+
+  <ion-navbar>
+    <ion-title>Edit Profile</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<!--Header-Ended-->
+<!--=====================================================================-->
+<!--Body-Started-->
+
+<ion-content no-padding>
+
+  <form [formGroup]="user" (ngSubmit)="userUpdate()">
+
+    <ion-card class="settings-card" no-margin>
+
+      <ion-card-header>General</ion-card-header>
+
+      <div class="form-group">
+        <ion-label>Name</ion-label>
+        <ion-input formControlName="name" name="name" type="text" placeholder="Name" value=""></ion-input>
+        <p class="warn" [hidden]="user.controls.name.valid" danger padding-left>Name is not valid</p>
+        <p class="warn" *ngFor="let error of name_error" [hidden]="!(name_error.length == 0)" danger padding-left>{{ error }}</p>
+      </div>
+
+      <div class="form-group">
+        <ion-label>Username</ion-label>
+        <ion-input formControlName="username" name="username" type="text" placeholder="Username" value=""></ion-input>
+        <p class="warn" [hidden]="user.controls.username.valid" danger padding-left>Username is not valid</p>
+        <p class="warn" *ngFor="let error of username_error" [hidden]="!(username_error.length == 0)" danger padding-left>{{ error }}</p>
+      </div>
+
+      <div class="form-group">
+        <ion-label>Email</ion-label>
+        <ion-input formControlName="email" name="email" type="email" placeholder="Email" value=""></ion-input>
+        <p class="warn" [hidden]="user.controls.email.valid" danger padding-left>Email is not valid</p>
+        <p class="warn" *ngFor="let error of email_error" [hidden]="!(email_error.length == 0)" danger padding-left>{{ error }}</p>
+      </div>
+
+      <div class="form-group">
+        <button ion-button type="submit" [disabled]="!user.valid" block>Update!</button>
+      </div>
+
+    </ion-card>
+
+  </form>
+
+  <form [formGroup]="userLocation" (ngSubmit)="userUpdateLocation()">
+
+    <ion-card class="settings-card" no-margin>
+
+      <ion-card-header>Location</ion-card-header>
+
+      <ion-list>
+
+        <ion-item class="form-group" *ngIf="countries.length">
+          <ion-label>Country</ion-label>
+          <ion-select formControlName="country_code" name="country_code" [(ngModel)]="country" [selectOptions]="countrySelectOptions" (ionChange)="selectCountry()">
+            <ion-option *ngFor="let country of countries" value="{{country.code}}">{{country.name}}</ion-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-item class="form-group" *ngIf="cities.length">
+          <ion-label>City</ion-label>
+          <ion-select formControlName="city_id" name="city_id" [(ngModel)]="city" [selectOptions]="citySelectOptions">
+            <ion-option *ngFor="let city of cities" value="{{city.id}}">{{city.name}}</ion-option>
+          </ion-select>
+        </ion-item>
+
+      </ion-list>
+
+      <div class="form-group">
+        <button ion-button [disabled]="!userLocation.valid" type="submit" block>Update!</button>
+      </div>
+
+    </ion-card>
+
+  </form>
+
+  <form [formGroup]="userPassword" (ngSubmit)="userUpdatePassword()">
+
+    <ion-card class="settings-card" no-margin>
+
+      <ion-card-header>Password</ion-card-header>
+
+      <div class="form-group">
+        <ion-label>Old Password</ion-label>
+        <ion-input formControlName="old_password" name="old_password" type="password" placeholder="Password"></ion-input>
+        <p class="warn" [hidden]="userPassword.controls.old_password.valid" danger padding-left>Password is not valid</p>
+        <p class="warn" *ngFor="let error of old_password_error" [hidden]="!(old_password_error.length == 0)" danger padding-left>{{ error }}</p>
+      </div>
+
+      <div class="form-group">
+        <ion-label>New Password</ion-label>
+        <ion-input formControlName="new_password" name="new_password" type="password" placeholder="Password"></ion-input>
+        <p class="warn" [hidden]="userPassword.controls.new_password.valid" danger padding-left>Password is not valid</p>
+        <p class="warn" *ngFor="let error of new_password_error" [hidden]="!(new_password_error.length == 0)" danger padding-left>{{ error }}</p>
+      </div>
+
+      <div class="form-group">
+        <ion-label>Confirm Password</ion-label>
+        <ion-input formControlName="cpassword" name="cpassword" type="password" placeholder="Confirm Password"></ion-input>
+        <p class="warn" [hidden]="userPassword.controls.cpassword.valid" danger padding-left>Password is not valid</p>
+      </div>
+
+      <div class="form-group">
+        <button ion-button type="submit" [disabled]="!userPassword.valid" block>Update!</button>
+      </div>
+
+    </ion-card>
+
+  </form>
+
+</ion-content>
+
+<!--Body-Ended-->
+<!--=====================================================================-->
