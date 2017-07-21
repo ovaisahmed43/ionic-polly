@@ -30,14 +30,14 @@ export class PickerPage {
     private loadingCtrl: LoadingController,
     private transfer: FileTransfer,
     private file: File
-  ) {}
+  ) { }
 
-  getAudios(){
+  getAudios() {
     let root: any = this.file.externalRootDirectory;
     // let data: any = this.file.listDir(root, '/');
     this.file.resolveLocalFilesystemUrl(root).then((fileSystem) => {
       console.log(fileSystem);
-    }).catch((error) => {});
+    }).catch((error) => { });
     // console.log(data);
     //   function (fileSystem) {
     //     var reader = fileSystem.createReader();
@@ -54,9 +54,9 @@ export class PickerPage {
     //   }
     // );
   }
-  getVideos(){}
+  getVideos() { }
 
-  upload(_opt_no: string, fileURL: string, _mimeType: string){
+  upload(_opt_no: string, fileURL: string, _mimeType: string) {
     let loader = this.loader();
 
     let fileTransfer: FileTransferObject = this.transfer.create();
@@ -82,20 +82,20 @@ export class PickerPage {
     // });
 
     fileTransfer.upload(fileURL[0], encodeURI(this.host + "/api/upload"), options)
-    .then((data) => {
-      var json = JSON.parse(data['response']);
-      console.log(json);
-      if (json.status == 1) {
-        this.callback(this.id, json);
-      } else {
-        this.my_alert(json.error, json.description);
-      }
-      loader.dismiss();
-    }, (error) => {
-      this.my_alert('Error!', error);
-      console.log(error);
-      loader.dismiss();
-    });
+      .then((data) => {
+        var json = JSON.parse(data['response']);
+        console.log(json);
+        if (json.status == 1) {
+          this.callback(this.id, json);
+        } else {
+          this.my_alert(json.error, json.description);
+        }
+        loader.dismiss();
+      }, (error) => {
+        this.my_alert('Error!', error);
+        console.log(error);
+        loader.dismiss();
+      });
   }
 
   ionViewWillEnter() {
@@ -112,7 +112,7 @@ export class PickerPage {
     }
   }
 
-  my_alert(_title: string, _subTitle: string){
+  my_alert(_title: string, _subTitle: string) {
     let alert = this.alertCtrl.create({
       title: _title,
       subTitle: _subTitle,
@@ -121,8 +121,8 @@ export class PickerPage {
     alert.present();
   }
 
-  loader(){
-    let loader = this.loadingCtrl.create({ spinner:'crescent' });
+  loader() {
+    let loader = this.loadingCtrl.create({ spinner: 'crescent' });
     loader.present();
     return loader;
   }
