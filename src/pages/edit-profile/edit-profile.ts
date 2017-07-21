@@ -91,7 +91,7 @@ export class EditProfilePage {
     headers.append('Content-Type', 'application/json');
     this.http.post(this.host + "/api/user", {token:this.token}, {headers: headers})
     .subscribe(data => {
-      var json = JSON.parse(data['_body']);
+      let json = JSON.parse(data['_body']);
       console.log(json);
       if (json.status == 1) {
         this.user.setValue({
@@ -139,7 +139,7 @@ export class EditProfilePage {
     headers.append('Content-Type', 'application/json');
     this.http.post(this.host + "/api/user/update", JSON.stringify(this.user.value), {headers: headers})
     .subscribe(data => {
-      var json = JSON.parse(data['_body']);
+      let json = JSON.parse(data['_body']);
       console.log(json);
       if (json.status == 1) {
         this.user.setValue({
@@ -153,15 +153,15 @@ export class EditProfilePage {
 
       } else {
 
-        for(var arr1 in json.data.name) {
+        for(let arr1 in json.data.name) {
           this.name_error.push(json.data.name[arr1]);
         }
 
-        for(var arr2 in json.data.username) {
+        for(let arr2 in json.data.username) {
           this.username_error.push(json.data.username[arr2]);
         }
 
-        for(var arr3 in json.data.email) {
+        for(let arr3 in json.data.email) {
           this.email_error.push(json.data.email[arr3]);
         }
 
@@ -181,7 +181,7 @@ export class EditProfilePage {
     headers.append('Content-Type', 'application/json');
     this.http.post(this.host + "/api/user/location/update", JSON.stringify(this.userLocation.value), {headers: headers})
     .subscribe(data => {
-      var json = JSON.parse(data['_body']);
+      let json = JSON.parse(data['_body']);
       console.log(json);
       if (json.status == 1) {
         this.showToast('Your Location has been Updated!');
@@ -204,17 +204,17 @@ export class EditProfilePage {
       headers.append('Content-Type', 'application/json');
       this.http.post(this.host + "/api/user/password/update", JSON.stringify(this.userPassword.value), {headers: headers})
       .subscribe(data => {
-        var json = JSON.parse(data['_body']);
+        let json = JSON.parse(data['_body']);
         console.log(json);
         if (json.status == 1) {
           // this.my_alert('Success!','Your Password has been Updated!');
           this.showToast('Your Password has been Updated!');
         } else {
-          for(var arr1 in json.data.old_password) {
+          for(let arr1 in json.data.old_password) {
             this.old_passowrd_error.push(json.data.old_password[arr1]);
           }
-          for(var arr1 in json.data.new_password) {
-            this.new_passowrd_error.push(json.data.new_password[arr1]);
+          for(let arr2 in json.data.new_password) {
+            this.new_passowrd_error.push(json.data.new_password[arr2]);
           }
           this.my_alert(json.error, json.description);
         }
@@ -233,7 +233,7 @@ export class EditProfilePage {
     headers.append('Content-Type', 'application/json');
     this.http.post(this.host + "/api/countries", {}, {headers: headers})
     .subscribe(data => {
-      var json = JSON.parse(data['_body']);
+      let json = JSON.parse(data['_body']);
       console.log(json);
       if (json.status == 1) {
         this.countries = json.countries;
@@ -250,7 +250,7 @@ export class EditProfilePage {
     headers.append('Content-Type', 'application/json');
     this.http.post(this.host + "/api/cities", {code: this.country}, {headers: headers})
     .subscribe(data => {
-      var json = JSON.parse(data['_body']);
+      let json = JSON.parse(data['_body']);
       console.log(json);
       if (json.status == 1) {
         this.cities = json.cities;

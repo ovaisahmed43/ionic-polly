@@ -1,2 +1,14 @@
 page-home {
+    ion-scroll.recommend {
+        height: 42px;
+        width: 100%;
+        .scroll-content {
+            height: 42px;
+            width: 100%;
+            .scroll-zoom-wrapper {
+                display: inline-block;
+                white-space: nowrap;
+            }
+        }
+    }
 }

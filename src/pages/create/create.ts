@@ -7,6 +7,8 @@ import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-nati
 import { Validators, FormBuilder, FormGroup, FormArray } from '@angular/forms';
 import { Http, Headers } from '@angular/http';
 
+import { PickerPage } from "../picker/picker";
+
 @IonicPage()
 @Component({
   selector: 'page-create',
@@ -22,6 +24,7 @@ export class CreatePage {
   all_keywords: Array<Object>;
 
   temp: number;
+  temp1: string = "Nulla";
 
   constructor(
     public navCtrl: NavController,
@@ -169,8 +172,12 @@ export class CreatePage {
         });
       }
     }
-    else if (this.post.controls.type.value == 'audio') {}
-    else if (this.post.controls.type.value == 'video') {}
+    else if (this.post.controls.type.value == 'audio') {
+      this.gotoPicker(_id);
+    }
+    else if (this.post.controls.type.value == 'video') {
+      this.gotoPicker(_id);
+    }
     else {
       this.my_alert('Error!','There is an error in Post Type.');
     }
@@ -235,6 +242,23 @@ export class CreatePage {
       }
     }, error => {
       this.my_alert('Error!', error);
+    });
+  }
+
+  myCallbackFunction = (_id: string, _result: string) => {
+    return new Promise((resolve, reject) => {
+        this.temp1 = _result;
+        resolve();
+    });
+  }
+
+  gotoPicker(_id: string){
+    this.navCtrl.push(PickerPage, {
+      host: this.host,
+      token: this.token,
+      type: this.type,
+      id: _id,
+      callback: this.myCallbackFunction
     });
   }
 

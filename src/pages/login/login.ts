@@ -17,8 +17,8 @@ import { HomePage } from "../home/home";
 
 export class LoginPage {
   // host: string = "http://jamiamilliagce.edu.pk/owais/public/";
-  // host: string = "http://192.168.0.107/fyp/public/";
-  host: string = "http://localhost/fyp/public/";
+  host: string = "http://192.168.0.104/fyp/public/";
+  // host: string = "http://localhost/fyp/public/";
 
   registerPage = RegisterPage;
   user: FormGroup;

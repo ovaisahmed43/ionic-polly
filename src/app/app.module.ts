@@ -25,6 +25,7 @@ import { PostPage } from "../pages/post/post";
 import { SlidesPage } from "../pages/slides/slides";
 import { CreatePage } from "../pages/create/create";
 import { CategoriesPage } from "../pages/categories/categories";
+import { PickerPage } from "../pages/picker/picker";
 
 // Custom Modules
 // import { TagInputModule } from 'ng2-tag-input';
@@ -47,7 +48,8 @@ const cloudSettings: CloudSettings = {
     PostPage,
     SlidesPage,
     CreatePage,
-    CategoriesPage
+    CategoriesPage,
+    PickerPage
   ],
   imports: [
     BrowserModule,
@@ -67,7 +69,8 @@ const cloudSettings: CloudSettings = {
     PostPage,
     SlidesPage,
     CreatePage,
-    CategoriesPage
+    CategoriesPage,
+    PickerPage
   ],
   providers: [
     StatusBar,

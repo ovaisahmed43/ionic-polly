@@ -18,14 +18,14 @@ import { CreatePage } from "../create/create";
 
 export class HomePage {
   // host: string = "http://jamiamilliagce.edu.pk/owais/public/";
-  // host: string = "http://192.168.0.107/fyp/public/";
-  host: string = "http://localhost/fyp/public/";
+  host: string = "http://192.168.0.104/fyp/public/";
+  // host: string = "http://localhost/fyp/public/";
   token: string;
   user: Object;
 
   profilePage = ProfilePage;
   last_kw_ids: string;
-  feedData: Array<Object>;
+  feedData: Array<FeedData>;
   categories: Array<Object>;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private http: Http, private alertCtrl: AlertController, private storage: Storage, private loadingCtrl: LoadingController) {
@@ -94,24 +94,46 @@ export class HomePage {
       var json = JSON.parse(data['_body']);
       console.log(json);
       if (json.status == 1) {
+
+        let pst = [];
         this.last_kw_ids = json.last_posts;
+
         for(var iter1 in json.posts){
           for(var iter2 in json.posts[iter1].posts){
-            this.feedData.push(json.posts[iter1].posts[iter2]);
-          }  
+            pst.push(json.posts[iter1].posts[iter2]);
+          }
         }
+
+        this.feedData.push({
+          posts: pst,
+          categories: this.categories
+        });
+
         if (infiniteScroll != null) {
           infiniteScroll.complete();
+          this.getRecommendedCategories();
         }
+
+        if (loader != null) {
+          loader.dismiss();
+        }
+
       } else {
         this.my_alert(json.error, json.description);
         this.logout();
+        
+        if (loader != null) {
+          loader.dismiss();
+        }
       }
-    }, error => { this.my_alert('Error!', error); });
+    }, error => {
+      this.my_alert('Error!', error);
+      
+      if (loader != null) {
+        loader.dismiss();
+      }
+    });
 
-    if (loader != null) {
-      loader.dismiss();
-    }
   }
 
   getRecommendedCategories(){
@@ -170,4 +192,13 @@ export class HomePage {
     return loader;
   }
 
+}
+
+export class FeedData {
+  posts: Array<Object>;
+  categories: Array<Object>;
+  constructor(_posts:Array<Object>, _categories:Array<Object>){
+    this.posts = _posts;
+    this.categories = _categories;
+  }
 }

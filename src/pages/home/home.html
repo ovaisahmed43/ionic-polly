@@ -24,47 +24,51 @@
 
 <ion-content no-padding>
 
-  <ion-scroll scrollX="true">
-    <ion-chip *ngFor="let category of categories">
-      <ion-label>{{ category.category.name }}</ion-label>
-      <button ion-button color="primary" class="flat-btn">
-        <ion-icon name="add"></ion-icon>
-      </button>
-    </ion-chip>
-  </ion-scroll>
+  <ion-row *ngFor="let fdata of feedData">
 
-  <ion-card class="post" *ngFor="let fdata of feedData" (click)="gotoPost(fdata)" no-margin>
+    <ion-card class="post" *ngFor="let post of fdata.posts" (click)="gotoPost(post)" no-margin>
 
-    <ion-item>
-      <ion-thumbnail item-left>
-        <img src="{{ host }}/storage/{{ fdata.profile_pic }}">
-      </ion-thumbnail>
-      <h2>{{ fdata.name }}</h2>
-      <p>{{ fdata.post_time | date:'fullDate' }}</p>
-    </ion-item>
+      <ion-item>
+        <ion-thumbnail item-left>
+          <img src="{{ host }}/storage/{{ post.profile_pic }}">
+        </ion-thumbnail>
+        <h2>{{ post.name }}</h2>
+        <p>{{ post.post_time | date:'fullDate' }}</p>
+      </ion-item>
 
-    <div class="ques" [innerHTML]="fdata.question"></div>
+      <div class="ques" [innerHTML]="post.question"></div>
 
-    <ion-row class="chips">
-      <ion-chip *ngFor="let kw of fdata.keywords">
-        <ion-label>#{{ kw.keyword }}</ion-label>
+      <ion-row class="chips">
+        <ion-chip *ngFor="let kw of post.keywords">
+          <ion-label>#{{ kw.keyword }}</ion-label>
+        </ion-chip>
+      </ion-row>
+
+      <ion-row>
+        <ion-col text-right>
+          <button ion-button icon-left small class="flat-btn">
+            <ion-icon name="thumbs-up"></ion-icon>
+            <div>{{ post.post_total_replies }}</div>
+          </button>
+          <button ion-button icon-left small class="flat-btn">
+            <ion-icon name="text"></ion-icon>
+            <div>{{ post.comments_count }}</div>
+          </button>
+        </ion-col>
+      </ion-row>
+
+    </ion-card>
+
+    <ion-scroll scrollX="true" scrollbar-x="false" class="recommend">
+      <ion-chip *ngFor="let category of fdata.categories">
+        <ion-label>{{ category.category.name }}</ion-label>
+        <button ion-button color="primary" class="flat-btn">
+          <ion-icon name="add"></ion-icon>
+        </button>
       </ion-chip>
-    </ion-row>
+    </ion-scroll>
 
-    <ion-row>
-      <ion-col text-right>
-        <button ion-button icon-left small class="flat-btn">
-          <ion-icon name="thumbs-up"></ion-icon>
-          <div>{{ fdata.post_total_replies }}</div>
-        </button>
-        <button ion-button icon-left small class="flat-btn">
-          <ion-icon name="text"></ion-icon>
-          <div>{{ fdata.comments_count }}</div>
-        </button>
-      </ion-col>
-    </ion-row>
-
-  </ion-card>
+  </ion-row>
 
   <ion-infinite-scroll (ionInfinite)="getMorePost($event)">
     <ion-infinite-scroll-content loadingSpinner="bubbles">
