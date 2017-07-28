@@ -20,8 +20,8 @@ export class EditProfilePage {
   userLocation: FormGroup;
   userPassword: FormGroup;
 
-  country :string;
-  oldCountry :string;
+  country: string;
+  oldCountry: string;
   countrySelectOptions: Object = {};
   countries: Array<Object> = [];
 
@@ -39,10 +39,10 @@ export class EditProfilePage {
   constructor(public navCtrl: NavController, public navParams: NavParams, private formBuilder: FormBuilder, private http: Http, public toastCtrl: ToastController, private alertCtrl: AlertController, private storage: Storage, private loadingCtrl: LoadingController) {
     // Set HostName of the URL
     this.host = this.navParams.get('host');
-    
+
     // Set token
     this.token = this.navParams.get('token');
-    
+
     // Setting SelectOption for Countries & Cities
     this.countrySelectOptions = {
       title: 'Select Country',
@@ -53,7 +53,7 @@ export class EditProfilePage {
       subTitle: 'Please select a City where you live in.'
     }
     this.getCountries();
-    
+
     // Set Validations for User
     this.user = this.formBuilder.group({
       name: ['', Validators.compose([Validators.maxLength(255), Validators.minLength(3), Validators.pattern('[a-zA-Z ]*'), Validators.required])],
@@ -77,192 +77,195 @@ export class EditProfilePage {
       cpassword: ['', Validators.compose([Validators.maxLength(255), Validators.minLength(6), Validators.required])],
       token: ['', Validators.required]
     });
-  
+
   }
 
-  ngAfterViewInit(){
+  ngAfterViewInit() {
     console.log('ngAfterViewInit');
   }
 
-  getUser(){
+  getUser() {
     let loader = this.loader();
 
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
-    this.http.post(this.host + "/api/user", {token:this.token}, {headers: headers})
-    .subscribe(data => {
-      let json = JSON.parse(data['_body']);
-      console.log(json);
-      if (json.status == 1) {
-        this.user.setValue({
-          name: json.user.name,
-          username: json.user.username,
-          email: json.user.email,
-          token: this.token
-        });
-
-        this.oldCountry = this.country = json.user.country_code;
-        this.oldCity = this.city = json.user.city_id;
-        this.getCities();
-
-        this.userLocation.setValue({
-          country_code: json.user.country_code,
-          city_id: json.user.city_id,
-          token: this.token
-        });
-
-        this.userPassword.setValue({
-          old_password: '',
-          new_password: '',
-          cpassword: '',
-          token: this.token
-        });
-
-        this.storage.remove('user');
-        this.storage.set('user', json.user);
-
-      } else {
-        this.my_alert(json.error, json.description);
-      }
-    }, error => {
-      this.my_alert('Error!', error);
-    });
-
-    loader.dismiss();
-  }
-
-  userUpdate(){
-    let loader = this.loader();
-
-    this.emptyErrors();
-    let headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    this.http.post(this.host + "/api/user/update", JSON.stringify(this.user.value), {headers: headers})
-    .subscribe(data => {
-      let json = JSON.parse(data['_body']);
-      console.log(json);
-      if (json.status == 1) {
-        this.user.setValue({
-          name: json.user.name,
-          username: json.user.username,
-          email: json.user.email,
-          token: this.token
-        });
-
-        this.showToast('Your Information has been Updated!');
-
-      } else {
-
-        for(let arr1 in json.data.name) {
-          this.name_error.push(json.data.name[arr1]);
-        }
-
-        for(let arr2 in json.data.username) {
-          this.username_error.push(json.data.username[arr2]);
-        }
-
-        for(let arr3 in json.data.email) {
-          this.email_error.push(json.data.email[arr3]);
-        }
-
-        this.my_alert(json.error, json.description);
-      }
-    }, error => {
-      this.my_alert('Error!', error);
-    });
-
-    loader.dismiss();
-  }
-
-  userUpdateLocation(){
-    let loader = this.loader();
-
-    let headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    this.http.post(this.host + "/api/user/location/update", JSON.stringify(this.userLocation.value), {headers: headers})
-    .subscribe(data => {
-      let json = JSON.parse(data['_body']);
-      console.log(json);
-      if (json.status == 1) {
-        this.showToast('Your Location has been Updated!');
-      } else {
-        this.my_alert(json.error, json.description);
-      }
-    }, error => {
-      this.my_alert('Error!', error);
-    });
-
-    loader.dismiss();
-  }
-
-  userUpdatePassword(){
-    let loader = this.loader();
-
-    this.emptyErrors();
-    if (this.userPassword.controls.new_password.valid == this.userPassword.controls.cpassword.valid) {
-      let headers = new Headers();
-      headers.append('Content-Type', 'application/json');
-      this.http.post(this.host + "/api/user/password/update", JSON.stringify(this.userPassword.value), {headers: headers})
+    this.http.post(this.host + "/api/user", { token: this.token }, { headers: headers })
       .subscribe(data => {
         let json = JSON.parse(data['_body']);
         console.log(json);
         if (json.status == 1) {
-          // this.my_alert('Success!','Your Password has been Updated!');
-          this.showToast('Your Password has been Updated!');
+          this.user.setValue({
+            name: json.user.name,
+            username: json.user.username,
+            email: json.user.email,
+            token: this.token
+          });
+
+          this.oldCountry = this.country = json.user.country_code;
+          this.oldCity = this.city = json.user.city_id;
+          this.getCities();
+
+          this.userLocation.setValue({
+            country_code: json.user.country_code,
+            city_id: json.user.city_id,
+            token: this.token
+          });
+
+          this.userPassword.setValue({
+            old_password: '',
+            new_password: '',
+            cpassword: '',
+            token: this.token
+          });
+
+          this.storage.remove('user');
+          this.storage.set('user', json.user);
+
         } else {
-          for(let arr1 in json.data.old_password) {
-            this.old_passowrd_error.push(json.data.old_password[arr1]);
+          this.my_alert(json.error, json.description);
+        }
+        loader.dismiss();
+      }, error => {
+        loader.dismiss();
+        this.my_alert('Error!', error);
+      });
+  }
+
+  userUpdate() {
+    let loader = this.loader();
+
+    this.emptyErrors();
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    this.http.post(this.host + "/api/user/update", JSON.stringify(this.user.value), { headers: headers })
+      .subscribe(data => {
+        let json = JSON.parse(data['_body']);
+        console.log(json);
+        if (json.status == 1) {
+          this.user.setValue({
+            name: json.user.name,
+            username: json.user.username,
+            email: json.user.email,
+            token: this.token
+          });
+
+          this.showToast('Your Information has been Updated!');
+
+        } else {
+
+          for (let arr1 in json.data.name) {
+            this.name_error.push(json.data.name[arr1]);
           }
-          for(let arr2 in json.data.new_password) {
-            this.new_passowrd_error.push(json.data.new_password[arr2]);
+
+          for (let arr2 in json.data.username) {
+            this.username_error.push(json.data.username[arr2]);
           }
+
+          for (let arr3 in json.data.email) {
+            this.email_error.push(json.data.email[arr3]);
+          }
+
+          this.my_alert(json.error, json.description);
+        }
+
+        loader.dismiss();
+      }, error => {
+        loader.dismiss();
+        this.my_alert('Error!', error);
+      });
+  }
+
+  userUpdateLocation() {
+    let loader = this.loader();
+
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    this.http.post(this.host + "/api/user/location/update", JSON.stringify(this.userLocation.value), { headers: headers })
+      .subscribe(data => {
+        let json = JSON.parse(data['_body']);
+        console.log(json);
+        if (json.status == 1) {
+          this.showToast('Your Location has been Updated!');
+        } else {
+          this.my_alert(json.error, json.description);
+        }
+
+        loader.dismiss();
+      }, error => {
+        loader.dismiss();
+        this.my_alert('Error!', error);
+      });
+  }
+
+  userUpdatePassword() {
+    this.emptyErrors();
+    if (this.userPassword.controls.new_password.valid == this.userPassword.controls.cpassword.valid) {
+
+      let loader = this.loader();
+
+      let headers = new Headers();
+      headers.append('Content-Type', 'application/json');
+      this.http.post(this.host + "/api/user/password/update", JSON.stringify(this.userPassword.value), { headers: headers })
+        .subscribe(data => {
+          let json = JSON.parse(data['_body']);
+          console.log(json);
+          if (json.status == 1) {
+            this.showToast('Your Password has been Updated!');
+          } else {
+            for (let arr1 in json.data.old_password) {
+              this.old_passowrd_error.push(json.data.old_password[arr1]);
+            }
+            for (let arr2 in json.data.new_password) {
+              this.new_passowrd_error.push(json.data.new_password[arr2]);
+            }
+            this.my_alert(json.error, json.description);
+          }
+
+          loader.dismiss();
+        }, error => {
+          loader.dismiss();
+          this.my_alert('Error!', error);
+        });
+    } else {
+      this.my_alert('Password not matched!', 'Password you entered do not match.');
+    }
+  }
+
+  getCountries() {
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    this.http.post(this.host + "/api/countries", {}, { headers: headers })
+      .subscribe(data => {
+        let json = JSON.parse(data['_body']);
+        console.log(json);
+        if (json.status == 1) {
+          this.countries = json.countries;
+        } else {
           this.my_alert(json.error, json.description);
         }
       }, error => {
         this.my_alert('Error!', error);
       });
-    } else {
-      this.my_alert('Password not matched!' ,'Password you entered do not match.');
-    }
-
-    loader.dismiss();
   }
 
-  getCountries(){
+  getCities() {
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
-    this.http.post(this.host + "/api/countries", {}, {headers: headers})
-    .subscribe(data => {
-      let json = JSON.parse(data['_body']);
-      console.log(json);
-      if (json.status == 1) {
-        this.countries = json.countries;
-      } else {
-        this.my_alert(json.error, json.description);
-      }
-    }, error => {
-      this.my_alert('Error!', error);
-    });
+    this.http.post(this.host + "/api/cities", { code: this.country }, { headers: headers })
+      .subscribe(data => {
+        let json = JSON.parse(data['_body']);
+        console.log(json);
+        if (json.status == 1) {
+          this.cities = json.cities;
+        } else {
+          this.my_alert(json.error, json.description);
+        }
+      }, error => {
+        this.my_alert('Error!', error);
+      });
   }
 
-  getCities(){
-    let headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    this.http.post(this.host + "/api/cities", {code: this.country}, {headers: headers})
-    .subscribe(data => {
-      let json = JSON.parse(data['_body']);
-      console.log(json);
-      if (json.status == 1) {
-        this.cities = json.cities;
-      } else {
-        this.my_alert(json.error, json.description);
-      }
-    }, error => {
-      this.my_alert('Error!', error);
-    });
-  }
-
-  selectCountry(){
+  selectCountry() {
     if (this.oldCountry != this.country) {
       this.city = '';
     } else {
@@ -271,7 +274,7 @@ export class EditProfilePage {
     this.getCities();
   }
 
-  logout(){
+  logout() {
     this.token = "";
     // this.user = {}
 
@@ -282,8 +285,8 @@ export class EditProfilePage {
     this.navCtrl.setRoot(LoginPage);
   }
 
-  loader(){
-    let loader = this.loadingCtrl.create({ spinner:'crescent' });
+  loader() {
+    let loader = this.loadingCtrl.create({ spinner: 'crescent' });
     loader.present();
     return loader;
   }
@@ -297,7 +300,7 @@ export class EditProfilePage {
     toast.present(toast);
   }
 
-  my_alert(_title: string, _subTitle: string){
+  my_alert(_title: string, _subTitle: string) {
     let alert = this.alertCtrl.create({
       title: _title,
       subTitle: _subTitle,
@@ -305,8 +308,8 @@ export class EditProfilePage {
     });
     alert.present();
   }
-  
-  emptyErrors(){
+
+  emptyErrors() {
     this.name_error = new Array<string>();
     this.username_error = new Array<string>();
     this.email_error = new Array<string>();

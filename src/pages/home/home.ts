@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
+import { Platform, IonicPage, NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
 
 import { Http, Headers } from '@angular/http';
 import { Storage } from "@ionic/storage";
+import { BackgroundMode } from '@ionic-native/background-mode';
 
 import { LoginPage } from "../login/login";
 import { ProfilePage } from "../profile/profile";
@@ -18,8 +19,8 @@ import { CreatePage } from "../create/create";
 
 export class HomePage {
   // host: string = "http://jamiamilliagce.edu.pk/owais/public/";
-  host: string = "http://192.168.0.104/fyp/public/";
-  // host: string = "http://localhost/fyp/public/";
+  // host: string = "http://192.168.0.107/fyp/public/";
+  host: string = "http://localhost/fyp/public/";
   token: string;
   user: Object;
 
@@ -28,8 +29,24 @@ export class HomePage {
   feedData: Array<FeedData>;
   categories: Array<Object>;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private http: Http, private alertCtrl: AlertController, private storage: Storage, private loadingCtrl: LoadingController) {
+  constructor(
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    private http: Http,
+    private alertCtrl: AlertController,
+    private storage: Storage,
+    private loadingCtrl: LoadingController,
+    private backgroundMode: BackgroundMode
+  ) {
     this.authenticate();
+    this.backgroundMode.overrideBackButton();
+    this.backgroundMode.excludeFromTaskList();
+  }
+
+  ionViewDidEnter() {
+    if (this.token != null) {
+      this.getMorePost(null);
+    }
   }
 
   authenticate() {
@@ -45,14 +62,11 @@ export class HomePage {
         loader.dismiss();
 
         this.getMorePost(null);
-        this.getUser();
         this.getRecommendedCategories();
+        this.getUser();
       }
-
-      // console.log(this.storage.keys());
     });
 
-    loader.dismissAll();
   }
 
   ionViewDidLoad() {

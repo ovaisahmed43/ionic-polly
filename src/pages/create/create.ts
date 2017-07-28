@@ -58,7 +58,7 @@ export class CreatePage {
     this.getKeywords();
   }
 
-  checkValidity(){
+  checkValidity() {
     let p = this.post.controls;
     console.log('token => ' + p.token.valid + ' | ' + p.token.value);
     console.log('ques => ' + p.ques.valid + ' | ' + p.ques.value);
@@ -113,7 +113,7 @@ export class CreatePage {
       }
       else {
         this.post.controls.count.setValue(this.post.controls.count.value - 1);
-        this.my_alert('Error!','There is an error in Post Type.');
+        this.my_alert('Error!', 'There is an error in Post Type.');
       }
 
       this.post.controls.count.setValue(this.post.controls.count.value + 1);
@@ -121,7 +121,7 @@ export class CreatePage {
     }
   }
 
-  postPoll(){
+  postPoll() {
     this.checkValidity();
 
     if (this.post.valid) {
@@ -129,18 +129,18 @@ export class CreatePage {
 
       let headers = new Headers();
       headers.append('Content-Type', 'application/json');
-      this.http.post(this.host + "/api/post", JSON.stringify(this.post.value), {headers: headers})
-      .subscribe(data => {
-        var json = JSON.parse(data['_body']);
-        console.log(json);
-        if (json.status == 1) {
-          // this.showToast('Your Location has been Updated!');
-        } else {
-          this.my_alert(json.error, json.description);
-        }
-      }, error => {
-        this.my_alert('Error!', error);
-      });
+      this.http.post(this.host + "/api/post", JSON.stringify(this.post.value), { headers: headers })
+        .subscribe(data => {
+          var json = JSON.parse(data['_body']);
+          console.log(json);
+          if (json.status == 1) {
+            // this.showToast('Your Location has been Updated!');
+          } else {
+            this.my_alert(json.error, json.description);
+          }
+        }, error => {
+          this.my_alert('Error!', error);
+        });
 
       loader.dismiss();
     }
@@ -158,7 +158,7 @@ export class CreatePage {
     return false;
   }
 
-  uploadFile(_id: string){
+  uploadFile(_id: string) {
     if (this.post.controls.type.value == 'image') {
       if (!this.requestPermission(0)) {
         this.my_alert('Error!', 'No Read Permission.');
@@ -179,11 +179,11 @@ export class CreatePage {
       this.gotoPicker(_id);
     }
     else {
-      this.my_alert('Error!','There is an error in Post Type.');
+      this.my_alert('Error!', 'There is an error in Post Type.');
     }
   }
 
-  upload(_opt_no: string, fileURL: string, _mimeType: string){
+  upload(_opt_no: string, fileURL: string, _mimeType: string) {
     this.temp = 0;
     let loader = this.loader();
 
@@ -210,49 +210,49 @@ export class CreatePage {
     });
 
     fileTransfer.upload(fileURL[0], encodeURI(this.host + "/api/upload"), options)
-    .then((data) => {
-      var json = JSON.parse(data['response']);
-      console.log(json);
-      if (json.status == 1) {
-        this.options.controls[_opt_no].controls.file_id.setValue(json.file_id);
-        this.options.controls[_opt_no].controls.file_path.setValue(json.file_url);
-        this.temp = 0;
-      } else {
-        this.my_alert(json.error, json.description);
-      }
-      loader.dismiss();
-    }, (error) => {
-      this.my_alert('Error!', error);
-      console.log(error);
-      loader.dismiss();
-    });
+      .then((data) => {
+        var json = JSON.parse(data['response']);
+        console.log(json);
+        if (json.status == 1) {
+          this.options.controls[_opt_no].controls.file_id.setValue(json.file_id);
+          this.options.controls[_opt_no].controls.file_path.setValue(json.file_url);
+          this.temp = 0;
+        } else {
+          this.my_alert(json.error, json.description);
+        }
+        loader.dismiss();
+      }, (error) => {
+        this.my_alert('Error!', error);
+        console.log(error);
+        loader.dismiss();
+      });
   }
 
-  getKeywords(){
+  getKeywords() {
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
-    this.http.post(this.host + "/api/user/keywords", {token:this.token}, {headers: headers})
-    .subscribe(data => {
-      var json = JSON.parse(data['_body']);
-      console.log(json);
-      if (json.status == 1) {
-        this.all_keywords = json.keywords;
-      } else {
-        this.my_alert(json.error, json.description);
-      }
-    }, error => {
-      this.my_alert('Error!', error);
-    });
+    this.http.post(this.host + "/api/user/keywords", { token: this.token }, { headers: headers })
+      .subscribe(data => {
+        var json = JSON.parse(data['_body']);
+        console.log(json);
+        if (json.status == 1) {
+          this.all_keywords = json.keywords;
+        } else {
+          this.my_alert(json.error, json.description);
+        }
+      }, error => {
+        this.my_alert('Error!', error);
+      });
   }
 
   myCallbackFunction = (_id: string, _result: string) => {
     return new Promise((resolve, reject) => {
-        this.temp1 = _result;
-        resolve();
+      this.temp1 = _result;
+      resolve();
     });
   }
 
-  gotoPicker(_id: string){
+  gotoPicker(_id: string) {
     this.navCtrl.push(PickerPage, {
       host: this.host,
       token: this.token,
@@ -262,7 +262,7 @@ export class CreatePage {
     });
   }
 
-  my_alert(_title: string, _subTitle: string){
+  my_alert(_title: string, _subTitle: string) {
     let alert = this.alertCtrl.create({
       title: _title,
       subTitle: _subTitle,
@@ -271,8 +271,8 @@ export class CreatePage {
     alert.present();
   }
 
-  loader(){
-    let loader = this.loadingCtrl.create({ spinner:'crescent' });
+  loader() {
+    let loader = this.loadingCtrl.create({ spinner: 'crescent' });
     loader.present();
     return loader;
   }
@@ -296,7 +296,7 @@ export class Post {
   options: Array<Option>;
   keywords: Array<Keyword>;
 
-  constructor(){}
+  constructor() { }
 }
 
 export class Option {

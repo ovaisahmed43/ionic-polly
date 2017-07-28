@@ -52,94 +52,94 @@ export class PostPage {
     console.log('ionViewDidLoad PostPage');
   }
 
-  getComments(){
+  getComments() {
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
-    this.http.post(this.host + "/api/comments", {post_id:this.post['post_id'],token:this.token}, {headers: headers})
-    .subscribe(data => {
-      var json = JSON.parse(data['_body']);
-      console.log(json);
-      if (json.status == 1) {
-        this.comments = json.comments;
-      } else {
-        this.my_alert(json.error, json.description);
-      }
-    }, error => {
-      this.my_alert('Error!', error);
-    });
+    this.http.post(this.host + "/api/comments", { post_id: this.post['post_id'], token: this.token }, { headers: headers })
+      .subscribe(data => {
+        var json = JSON.parse(data['_body']);
+        console.log(json);
+        if (json.status == 1) {
+          this.comments = json.comments;
+        } else {
+          this.my_alert(json.error, json.description);
+        }
+      }, error => {
+        this.my_alert('Error!', error);
+      });
   }
 
-  doComment(){
+  doComment() {
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
-    this.http.post(this.host + "/api/comment", JSON.stringify(this.newComment.value), {headers: headers})
-    .subscribe(data => {
-      var json = JSON.parse(data['_body']);
-      console.log(json);
-      if (json.status == 1) {
-        this.newComment.controls.comment.setValue('');
-        this.comments = json.comments;
-        this.getComments();
-      } else {
-        this.my_alert(json.error, json.description);
-      }
-    }, error => {
-      this.my_alert('Error!', error);
-    });
+    this.http.post(this.host + "/api/comment", JSON.stringify(this.newComment.value), { headers: headers })
+      .subscribe(data => {
+        var json = JSON.parse(data['_body']);
+        console.log(json);
+        if (json.status == 1) {
+          this.newComment.controls.comment.setValue('');
+          this.comments = json.comments;
+          this.getComments();
+        } else {
+          this.my_alert(json.error, json.description);
+        }
+      }, error => {
+        this.my_alert('Error!', error);
+      });
   }
 
-  getUser(){
+  getUser() {
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
-    this.http.post(this.host + "/api/user", { token:this.token,username:this.username }, { headers: headers })
-    .subscribe(data => {
+    this.http.post(this.host + "/api/user", { token: this.token, username: this.username }, { headers: headers })
+      .subscribe(data => {
 
-      var json = JSON.parse(data['_body']);
-      console.log(json);
+        var json = JSON.parse(data['_body']);
+        console.log(json);
 
-      if (json.status == 1) { this.user = json.user; }
-      else {
-        this.my_alert(json.error, json.description);
-        this.logout();
-      }
+        if (json.status == 1) { this.user = json.user; }
+        else {
+          this.my_alert(json.error, json.description);
+          this.logout();
+        }
 
-    }, error => { this.my_alert('Error!', error); });
+      }, error => { this.my_alert('Error!', error); });
   }
 
-  doVote(_post_id: string, _option_no: string){
+  doVote(_post_id: string, _option_no: string) {
     let loader = this.loader();
     this.replied = true;
 
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
-    this.http.post(this.host + "/api/post/vote", { token:this.token, post_id:_post_id, option_no:_option_no }, { headers: headers })
-    .subscribe(data => {
+    this.http.post(this.host + "/api/post/vote", { token: this.token, post_id: _post_id, option_no: _option_no }, { headers: headers })
+      .subscribe(data => {
 
-      var json = JSON.parse(data['_body']);
-      console.log(json);
+        var json = JSON.parse(data['_body']);
+        console.log(json);
 
-      if (json.status == 1) {
-        console.log(json.replies);
-        for (var index = 0; index < json.replies.length; index++) {
-          this.post['post_options'][index]['total'] = json.replies[index]['total'];
+        if (json.status == 1) {
+          console.log(json.replies);
+          for (var index = 0; index < json.replies.length; index++) {
+            this.post['post_options'][index]['total'] = json.replies[index]['total'];
+          }
         }
-      }
-      else {
-        this.my_alert(json.error, json.description);
-      }
+        else {
+          this.my_alert(json.error, json.description);
+        }
 
-      loader.dismiss();
+        loader.dismiss();
 
-    }, error => { this.my_alert('Error!', error); });
+      }, error => { this.my_alert('Error!', error); });
 
     loader.dismissAll();
   }
 
-  gotoSlides(_options){ this.navCtrl.push(SlidesPage, { host:this.host, token:this.token, options:_options, type:this.post['post_type'] }); }
+  gotoSlides(_options) { this.navCtrl.push(SlidesPage, { host: this.host, token: this.token, options: _options, type: this.post['post_type'] }); }
 
-  gotoProfile(_username){ this.navCtrl.push(ProfilePage, { host:this.host, token:this.token, auth:this.auth, user:this.user }); }
+  gotoProfile(_username) { this.navCtrl.push(ProfilePage, { host: this.host, token: this.token, auth: this.auth, user: this.user }); }
 
-  logout(){
+  logout() {
     this.token = "";
     this.auth = {};
     this.user = {};
@@ -151,7 +151,7 @@ export class PostPage {
     this.navCtrl.setRoot(LoginPage);
   }
 
-  my_alert(_title: string, _subTitle: string){
+  my_alert(_title: string, _subTitle: string) {
     let alert = this.alertCtrl.create({
       title: _title,
       subTitle: _subTitle,
@@ -160,8 +160,8 @@ export class PostPage {
     alert.present();
   }
 
-  loader(){
-    let loader = this.loadingCtrl.create({ spinner:'crescent' });
+  loader() {
+    let loader = this.loadingCtrl.create({ spinner: 'crescent' });
     loader.present();
     return loader;
   }

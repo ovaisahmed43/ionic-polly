@@ -23,7 +23,7 @@
 
     <ion-row *ngIf="post.post_type == 'image'" (click)="gotoSlides(post.post_options)">
       <ion-col *ngFor="let option of post.post_options">
-      
+
         <ion-card class="width-100" no-margin>
           <!--files-->
           <img class="option-image" src="{{ host }}/storage/{{ option.filename }}" height="100%" width="100%">
@@ -52,7 +52,7 @@
               </button>
             </ion-col>
             <ion-col col-6 *ngIf="(post.notReplied)">
-              <button class="btn-vote" ion-button clear icon-left no-padding [disabled]="!replied" (click)="doVote(post.post_id,option.option_no)">
+              <button class="btn-vote" ion-button clear icon-left no-padding (click)="doVote(post.post_id,option.option_no)">
                 <ion-icon class="btn-vote" name="thumbs-up"></ion-icon>{{ option.total }}
               </button>
             </ion-col>
@@ -71,10 +71,10 @@
         </ion-card-content>
 
         <div class="progress-outer">
-            <div class="progress-inner" *ngIf="post.post_total_replies != 0" [style.width]="((option.total/post.post_total_replies)*100) + '%'">{{ (option.total/post.post_total_replies)*100 }}%</div>
-            <div class="progress-inner" *ngIf="post.post_total_replies == 0" [style.width]="'50%'">50%</div>
+          <div class="progress-inner" *ngIf="post.post_total_replies != 0" [style.width]="((option.total/post.post_total_replies)*100) + '%'">{{ (option.total/post.post_total_replies)*100 }}%</div>
+          <div class="progress-inner" *ngIf="post.post_total_replies == 0" [style.width]="'50%'">50%</div>
         </div>
-        
+
       </ion-card>
     </ion-row>
 
@@ -89,49 +89,49 @@
   <ion-label id="comment-label">Comments</ion-label>
 
   <!--<div *ngIf="comments.length">-->
-    <ion-card id="comments" col-12 no-margin>
+  <ion-card id="comments" col-12 no-margin>
 
-      <ion-item class="comment" *ngFor="let comment of comments">
-        <ion-thumbnail item-left (click)="gotoProfile(comment.username)">
-          <img src="{{ host }}/storage/{{ comment.image_url }}">
-        </ion-thumbnail>
-        <h3>{{ comment.name }}</h3>
-        <!--<h4>{{ comment.created_at }}</h4>-->
-        <div [innerHTML]="comment.comment"></div>
-      </ion-item>
+    <ion-item class="comment" *ngFor="let comment of comments">
+      <ion-thumbnail item-left (click)="gotoProfile(comment.username)">
+        <img src="{{ host }}/storage/{{ comment.image_url }}">
+      </ion-thumbnail>
+      <h3>{{ comment.name }}</h3>
+      <!--<h4>{{ comment.created_at }}</h4>-->
+      <div [innerHTML]="comment.comment"></div>
+    </ion-item>
 
-    </ion-card>
+  </ion-card>
 
 
-    <ion-card id="new-comment" col-12 no-margin>
-      <form [formGroup]="newComment" (ngSubmit)="doComment()">
-        <!--<ion-item>-->
+  <ion-card id="new-comment" col-12 no-margin>
+    <form [formGroup]="newComment" (ngSubmit)="doComment()">
+      <!--<ion-item>-->
 
-          <!--<ion-thumbnail item-left item-start>-->
-            <!--<img src="{{ host }}/storage/{{ auth.image_url }}">-->
-          <!--</ion-thumbnail>-->
+      <!--<ion-thumbnail item-left item-start>-->
+      <!--<img src="{{ host }}/storage/{{ auth.image_url }}">-->
+      <!--</ion-thumbnail>-->
 
-          <!--<ion-textarea placeholder="comment here..." formControlName="comment" name="comment" required></ion-textarea>-->
+      <!--<ion-textarea placeholder="comment here..." formControlName="comment" name="comment" required></ion-textarea>-->
 
-          <!--<button ion-button icon-only item-end type="submit" [disabled]="!newComment.valid"><ion-icon name="md-send"></ion-icon></button>-->
+      <!--<button ion-button icon-only item-end type="submit" [disabled]="!newComment.valid"><ion-icon name="md-send"></ion-icon></button>-->
 
-        <!--</ion-item>-->
+      <!--</ion-item>-->
 
-        <ion-row>
-          <ion-col col-2>
-            <img src="{{ host }}/storage/{{ auth.image_url }}">
-          </ion-col>
-          <ion-col col-8>
-            <ion-textarea placeholder="comment here..." formControlName="comment" name="comment" required></ion-textarea>
-          </ion-col>
-          <ion-col col-2>
-            <button ion-button icon-only block item-end type="submit" [disabled]="!newComment.valid">
+      <ion-row>
+        <ion-col col-2>
+          <img src="{{ host }}/storage/{{ auth.image_url }}">
+        </ion-col>
+        <ion-col col-8>
+          <ion-textarea placeholder="comment here..." formControlName="comment" name="comment" required></ion-textarea>
+        </ion-col>
+        <ion-col col-2>
+          <button ion-button icon-only block item-end type="submit" [disabled]="!newComment.valid">
               <ion-icon name="md-send"></ion-icon>
             </button>
-          </ion-col>
-        </ion-row>
-      </form>
-    </ion-card>
+        </ion-col>
+      </ion-row>
+    </form>
+  </ion-card>
 
   <!--</div>-->
 

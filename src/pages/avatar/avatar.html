@@ -1,0 +1,24 @@
+<ion-content no-padding>
+
+  <ion-row>
+    <ion-col>
+      <img id="profile-image" src="{{ host }}/storage/{{ image_url }}" alt="avatar">
+    </ion-col>
+  </ion-row>
+
+  <ion-row>
+    <ion-col>
+      <button ion-button type="button" color="primary" block (click)="changeAvatar()">Change</button>
+    </ion-col>
+    <ion-col>
+      <button ion-button type="button" color="danger" block (click)="removeAvatar()">Remove</button>
+    </ion-col>
+  </ion-row>
+
+  <ion-row>
+    <ion-col>
+      <button ion-button type="button" color="primary" outline block (click)="goBack()">Cancel</button>
+    </ion-col>
+  </ion-row>
+
+</ion-content>

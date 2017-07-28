@@ -32,62 +32,62 @@ export class CategoriesPage {
     this.getFollowingCategories();
   }
 
-  getCategories(){
+  getCategories() {
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
-    this.http.post(this.host + "/api/user/categories/all", {token:this.token}, {headers: headers})
-    .subscribe(data => {
-      var json = JSON.parse(data['_body']);
-      console.log(json);
-      if (json.status == 1) {
-        this.categories = json.categories;
-      } else {
-        this.my_alert(json.error, json.description);
-      }
-    }, error => {
-      this.my_alert('Error!', error);
-    });
+    this.http.post(this.host + "/api/user/categories/all", { token: this.token }, { headers: headers })
+      .subscribe(data => {
+        var json = JSON.parse(data['_body']);
+        console.log(json);
+        if (json.status == 1) {
+          this.categories = json.categories;
+        } else {
+          this.my_alert(json.error, json.description);
+        }
+      }, error => {
+        this.my_alert('Error!', error);
+      });
   }
 
-  getFollowingCategories(){
+  getFollowingCategories() {
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
-    this.http.post(this.host + "/api/user/categories", {token:this.token}, {headers: headers})
-    .subscribe(data => {
-      var json = JSON.parse(data['_body']);
-      console.log(json);
-      if (json.status == 1) {
-        this.followingIds = json.categories;
-        this.getCategories();
-      } else {
-        this.my_alert(json.error, json.description);
-      }
-    }, error => {
-      this.my_alert('Error!', error);
-    });
+    this.http.post(this.host + "/api/user/categories", { token: this.token }, { headers: headers })
+      .subscribe(data => {
+        var json = JSON.parse(data['_body']);
+        console.log(json);
+        if (json.status == 1) {
+          this.followingIds = json.categories;
+          this.getCategories();
+        } else {
+          this.my_alert(json.error, json.description);
+        }
+      }, error => {
+        this.my_alert('Error!', error);
+      });
   }
 
-  manageCategory(_id: string){
+  manageCategory(_id: string) {
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
-    this.http.post(this.host + "/api/user/category/manage", {token:this.token, id:_id}, {headers: headers})
-    .subscribe(data => {
-      var json = JSON.parse(data['_body']);
-      console.log(json);
-      if (json.status == 1) {
-      } else {
-        this.my_alert(json.error, json.description);
-      }
-    }, error => {
-      this.my_alert('Error!', error);
-    });
+    this.http.post(this.host + "/api/user/category/manage", { token: this.token, id: _id }, { headers: headers })
+      .subscribe(data => {
+        var json = JSON.parse(data['_body']);
+        console.log(json);
+        if (json.status == 1) {
+        } else {
+          this.my_alert(json.error, json.description);
+        }
+      }, error => {
+        this.my_alert('Error!', error);
+      });
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad CategoriesPage');
   }
 
-  my_alert(_title: string, _subTitle: string){
+  my_alert(_title: string, _subTitle: string) {
     let alert = this.alertCtrl.create({
       title: _title,
       subTitle: _subTitle,
